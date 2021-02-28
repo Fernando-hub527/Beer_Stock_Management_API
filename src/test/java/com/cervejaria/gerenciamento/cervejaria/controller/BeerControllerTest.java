@@ -2,6 +2,7 @@ package com.cervejaria.gerenciamento.cervejaria.controller;
 
 import com.cervejaria.gerenciamento.cervejaria.builder.BeerDTOBuilder;
 import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
+import com.cervejaria.gerenciamento.cervejaria.dto.QuantityDTO;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerAlreadyRegisteredException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerNotFoundException;
 import com.cervejaria.gerenciamento.cervejaria.service.BeerService;
@@ -20,9 +21,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
 
+import java.util.Collections;
+
 import static org.hamcrest.core.Is.is;
 import static com.cervejaria.gerenciamento.cervejaria.utils.JsonConvertionUtils.asJsonString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,8 +37,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class BeerControllerTest {
 
     private static final String BEER_API_URL_PATH = "/api/v1/beers";
-    private static final Long VALid_BEER_id = 1l;
-    private static final Long INVALid_BEER_id = 2l;
+    private static final Long VALID_BEER_ID = 1l;
+    private static final Long INVALid_BEER_ID = 2l;
     private static final String BEER_API_SUBPATH_INCREMENT_URL = "/increment";
     private static final String BEER_API_SUBPATH_DECREMENT_URL = "/decrement";
 
@@ -55,6 +58,7 @@ class BeerControllerTest {
                 .build();
     }
 
+    //createBeer
     @Test
     void whenPOSTIsCalledThenBeerIsCreat() throws Exception {
         //given
@@ -119,6 +123,81 @@ class BeerControllerTest {
                 .andExpect(status().isNotFound());
     }
 
+    //listBeers
+
+    @Test
+    void whenGETListWithBeersIsCalledThenOkStatusIsReturned() throws Exception {
+        // given
+        BeerDTO beerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+
+        //when
+        when(beerService.listAll()).thenReturn(Collections.singletonList(beerDTO));
+
+        // then
+        mockMvc.perform(MockMvcRequestBuilders.get(BEER_API_URL_PATH)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name", is(beerDTO.getName())))
+                .andExpect(jsonPath("$[0].brand", is(beerDTO.getBrand())))
+                .andExpect(jsonPath("$[0].type", is(beerDTO.getType().toString())));
+    }
+
+    @Test
+    void whenGETListWithoutBeersIsCalledThenOkStatusIsReturned() throws Exception {
+        // given
+        BeerDTO beerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+
+        //when
+        when(beerService.listAll()).thenReturn(Collections.singletonList(beerDTO));
+
+        // then
+        mockMvc.perform(MockMvcRequestBuilders.get(BEER_API_URL_PATH)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test void whenDeletedIsCalledWithIdValidThenNoContentIsReturned() throws Exception {
+        BeerDTO beerDTOForDeleted = BeerDTOBuilder.builder().build().toBeerDTO();
+
+        doNothing().when(beerService).deleteById(beerDTOForDeleted.getId());
+
+        //then
+        mockMvc.perform(MockMvcRequestBuilders.delete(BEER_API_URL_PATH + "/" + beerDTOForDeleted.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+    }
+
+    @Test void whenDeletedIsCalledWithIdValidThenNotFoundIsReturned() throws Exception {
+        BeerDTO beerDTOForDeleted = BeerDTOBuilder.builder().build().toBeerDTO();
+
+        doThrow(BeerNotFoundException.class).when(beerService).deleteById(INVALid_BEER_ID);
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(BEER_API_URL_PATH + "/" + beerDTOForDeleted.getId())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    void whenPATCHIsCalledToIncrementDiscountThenOKstatusIsReturned() throws Exception {
+        QuantityDTO quantityDTO = QuantityDTO.builder()
+                .quantity(10)
+                .build();
+
+        BeerDTO beerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        beerDTO.setQuantity(beerDTO.getQuantity() + quantityDTO.getQuantity());
+
+        when(beerService.increment(VALID_BEER_ID, quantityDTO.getQuantity())).thenReturn(beerDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders.patch(BEER_API_URL_PATH + "/" + VALID_BEER_ID + BEER_API_SUBPATH_INCREMENT_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(quantityDTO))).andExpect(status().isOk())
+                .andExpect(jsonPath("$.name", is(beerDTO.getName())))
+                .andExpect(jsonPath("$.brand", is(beerDTO.getBrand())))
+                .andExpect(jsonPath("$.type", is(beerDTO.getType().toString())))
+                .andExpect(jsonPath("$.quantity", is(beerDTO.getQuantity())));
+    }
 }
 
 

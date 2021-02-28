@@ -105,6 +105,8 @@ class BeerServiceTest {
         assertThat(listBeers.get(0), is(equalTo(beerDTOListExpected)));
     }
 
+    //delete
+
     @Test
     void whenExclusionIsCalledWithValidIdThenABeerShouldBeDeleted() throws BeerNotFoundException {
         BeerDTO beerDTOForBerDeleted = BeerDTOBuilder.builder().build().toBeerDTO();
