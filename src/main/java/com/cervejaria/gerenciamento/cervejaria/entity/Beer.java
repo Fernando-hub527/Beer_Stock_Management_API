@@ -14,17 +14,17 @@ import java.util.Date;
 public class Beer {
 
     @Id
-    private Long cod_barra;
+    private Long codeBarra;
 
     @Column(nullable = false)
     private Long custo;
 
     @Column(nullable = false)
-    private Date date;
+    private String date;
 
-    @ManyToOne
-    @JoinColumn(name = "fornecedores", referencedColumnName = "CNPJ", nullable = false)
-    private Fornecedor cnpjFornecedor;
+//    @ManyToOne
+//    @JoinColumn(name = "fornecedores", referencedColumnName = "CNPJ", nullable = false)
+//    private Provide cnpjProvide;
 
     @ManyToOne
     @JoinColumn(name = "id_Beers",  referencedColumnName = "id", nullable = false)

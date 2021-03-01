@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 
 @Api("Manages beer stock")
-public interface BeerControllerDocs {
+public interface APIBeerControllerDocs {
 
     @ApiOperation(value = "GroupBeers creation operation")
     @ApiResponses(value = {

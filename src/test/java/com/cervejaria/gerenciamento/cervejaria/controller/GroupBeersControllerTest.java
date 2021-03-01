@@ -3,7 +3,6 @@ package com.cervejaria.gerenciamento.cervejaria.controller;
 import com.cervejaria.gerenciamento.cervejaria.builder.BeerDTOBuilder;
 import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.QuantityDTO;
-import com.cervejaria.gerenciamento.cervejaria.exception.BeerAlreadyRegisteredException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerNotFoundException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerStockExceededException;
 import com.cervejaria.gerenciamento.cervejaria.service.BeerService;
@@ -16,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
@@ -50,11 +48,11 @@ class GroupBeersControllerTest {
     private BeerService beerService;
 
     @InjectMocks
-    private BeerController beerController;
+    private APIAPIBeerController APIBeerController;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(beerController)
+        mockMvc = MockMvcBuilders.standaloneSetup(APIBeerController)
                 .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .setViewResolvers((s, locale) -> new MappingJackson2JsonView())
                 .build();
@@ -62,7 +60,7 @@ class GroupBeersControllerTest {
 
     //createBeer
     @Test
-    void whenPOSTIsCalledThenBeerIsCreat() throws Exception {
+    void whenPOSTBeerIsCalledThenBeerIsCreat() throws Exception {
         //given
         BeerDTO beerDTOForCreate = BeerDTOBuilder.builder().build().toBeerDTO();
 

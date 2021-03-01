@@ -12,17 +12,17 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class Fornecedor {
+public class Provide {
 
     @Id
     private Integer CNPJ;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @Column(nullable = false)
-    private Integer telefone;
+    private Integer telephone;
 
     @Column(nullable = false)
-    private String endereco;
+    private String address;
 }

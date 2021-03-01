@@ -18,11 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/beers")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class BeerController implements BeerControllerDocs {
+public class APIAPIBeerController implements APIBeerControllerDocs {
 
     private final BeerService beerService;
 
-    @PostMapping
+    @PostMapping//("/{beer}")
     @ResponseStatus(HttpStatus.CREATED)
     public BeerDTO createBeer(@RequestBody @Valid BeerDTO beerDTO) throws BeerAlreadyRegisteredException {
         return beerService.createBeer(beerDTO);
