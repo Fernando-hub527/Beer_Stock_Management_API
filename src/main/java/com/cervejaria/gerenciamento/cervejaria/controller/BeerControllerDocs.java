@@ -15,7 +15,7 @@ import java.util.List;
 @Api("Manages beer stock")
 public interface BeerControllerDocs {
 
-    @ApiOperation(value = "Beer creation operation")
+    @ApiOperation(value = "GroupBeers creation operation")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Success beer creation"),
             @ApiResponse(code = 400, message = "Missing required fields or wrong field range value.")
@@ -25,7 +25,7 @@ public interface BeerControllerDocs {
     @ApiOperation(value = "Returns beer found by a given name")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Success beer found in the system"),
-            @ApiResponse(code = 404, message = "Beer with given name not found.")
+            @ApiResponse(code = 404, message = "GroupBeers with given name not found.")
     })
     BeerDTO findByName(@PathVariable String name) throws BeerNotFoundException;
 
@@ -38,7 +38,7 @@ public interface BeerControllerDocs {
     @ApiOperation(value = "Delete a beer found by a given valid Id")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Success beer deleted in the system"),
-            @ApiResponse(code = 404, message = "Beer with given id not found.")
+            @ApiResponse(code = 404, message = "GroupBeers with given id not found.")
     })
     void deleteById(@PathVariable Long id) throws BeerNotFoundException;
 }

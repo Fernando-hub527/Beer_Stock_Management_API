@@ -1,11 +1,11 @@
 package com.cervejaria.gerenciamento.cervejaria.entity;
 
-import com.cervejaria.gerenciamento.cervejaria.enums.BeerType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -14,24 +14,20 @@ import javax.persistence.*;
 public class Beer {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(nullable = false, unique = true)
-    private String name;
+    private Long cod_barra;
 
     @Column(nullable = false)
-    private String brand;
+    private Long custo;
 
     @Column(nullable = false)
-    private int max;
+    private Date date;
 
-    @Column(nullable = false)
-    private int quantity;
+    @ManyToOne
+    @JoinColumn(name = "fornecedores", referencedColumnName = "CNPJ", nullable = false)
+    private Fornecedor cnpjFornecedor;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private BeerType type;
-
+    @ManyToOne
+    @JoinColumn(name = "id_Beers",  referencedColumnName = "id", nullable = false)
+    private GroupBeers groupBeers;
 
 }
