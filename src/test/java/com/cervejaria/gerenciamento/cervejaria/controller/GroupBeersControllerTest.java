@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @ExtendWith(MockitoExtension.class)
-class BeerControllerTest {
+class GroupBeersControllerTest {
 
     private static final String BEER_API_URL_PATH = "/api/v1/beers";
     private static final Long VALID_BEER_ID = 1l;
