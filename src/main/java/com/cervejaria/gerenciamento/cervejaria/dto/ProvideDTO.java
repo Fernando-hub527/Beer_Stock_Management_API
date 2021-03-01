@@ -24,7 +24,7 @@ public class ProvideDTO {
 
     @NotNull
     @Size(min = 1, max = 200)
-    private Integer telephone;
+    private Long telephone;
 
     @NotNull
     @Size(min = 1, max = 200)
