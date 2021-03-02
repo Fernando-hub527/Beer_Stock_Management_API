@@ -14,17 +14,17 @@ import javax.validation.constraints.Size;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProvideDTO {
+public class
+ProvideDTO {
 
-    private Integer CNPJ;
+    private Long cnpj;
+
+    @NotNull
+    private Long telephone;
 
     @NotNull
     @Size(min = 1, max = 200)
     private String name;
-
-    @NotNull
-    @Size(min = 1, max = 200)
-    private Long telephone;
 
     @NotNull
     @Size(min = 1, max = 200)

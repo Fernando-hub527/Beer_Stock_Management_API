@@ -48,8 +48,8 @@ public class ProviderService {
     }
 
     private void verifyIfIsAlreadyRegistered(String name) throws BeerAlreadyRegisteredException {
-        Optional<Provide> optSavedBeer = provideRepository.findByName(name);
-        if (optSavedBeer.isPresent()) {
+        Optional<Provide> optSavedProvider = provideRepository.findByName(name);
+        if (optSavedProvider.isPresent()) {
             throw new BeerAlreadyRegisteredException(name);
         }
     }
