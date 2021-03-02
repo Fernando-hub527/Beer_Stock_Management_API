@@ -25,21 +25,21 @@ public class GroupBeerService {
 
     public BeerDTO createBeer(BeerDTO beerDTO) throws BeerAlreadyRegisteredException {
         verifyIfIsAlreadyRegistered(beerDTO.getName());
-        GroupBeers groupBeers = beerMapper.toModel(beerDTO);
+        GroupBeers groupBeers = beerMapper.toBeerModel(beerDTO);
         GroupBeers savedGroupBeers = groupBeerRepository.save(groupBeers);
-        return beerMapper.toDTO(savedGroupBeers);
+        return beerMapper.toBeerDTO(savedGroupBeers);
     }
 
     public BeerDTO findByName(String name) throws BeerNotFoundException {
         GroupBeers foundGroupBeers = groupBeerRepository.findByName(name)
                 .orElseThrow(() -> new BeerNotFoundException(name));
-        return beerMapper.toDTO(foundGroupBeers);
+        return beerMapper.toBeerDTO(foundGroupBeers);
     }
 
     public List<BeerDTO> listAll() {
         return groupBeerRepository.findAll()
                 .stream()
-                .map(beerMapper::toDTO)
+                .map(beerMapper::toBeerDTO)
                 .collect(Collectors.toList());
     }
 
@@ -66,7 +66,7 @@ public class GroupBeerService {
         if (quantityAfterIncrement <= groupBeersToIncrementStock.getMax()) {
             groupBeersToIncrementStock.setQuantity(groupBeersToIncrementStock.getQuantity() + quantityToIncrement);
             GroupBeers incrementedGroupBeersStock = groupBeerRepository.save(groupBeersToIncrementStock);
-            return beerMapper.toDTO(incrementedGroupBeersStock);
+            return beerMapper.toBeerDTO(incrementedGroupBeersStock);
         }
         throw new BeerStockExceededException(id, quantityToIncrement);
     }
@@ -77,7 +77,7 @@ public class GroupBeerService {
 
         if (quantityAfterDencrement >= 0){
             groupBeersToDecrementStock.setQuantity(quantityAfterDencrement);
-            BeerDTO DecrementedBeerStock = beerMapper.toDTO(groupBeerRepository.save(groupBeersToDecrementStock));
+            BeerDTO DecrementedBeerStock = beerMapper.toBeerDTO(groupBeerRepository.save(groupBeersToDecrementStock));
             return DecrementedBeerStock;
         }
 

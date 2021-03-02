@@ -24,21 +24,21 @@ public class ProviderService {
 
     public ProvideDTO createProvider(ProvideDTO provideDTO) throws BeerAlreadyRegisteredException {
         verifyIfIsAlreadyRegistered(provideDTO.getName());
-        Provide provide = provideMapper.toModel(provideDTO);
+        Provide provide = provideMapper.toProvideModel(provideDTO);
         Provide provideSave = provideRepository.save(provide);
-        return provideMapper.toDTO(provideSave);
+        return provideMapper.toProvideDTO(provideSave);
     }
 
     public ProvideDTO findByName(String name) throws BeerNotFoundException {
         Provide foundProvide = provideRepository.findByName(name)
                 .orElseThrow(() -> new BeerNotFoundException(name));
-        return provideMapper.toDTO(foundProvide);
+        return provideMapper.toProvideDTO(foundProvide);
     }
 
     public List<ProvideDTO> listAll() {
         return provideRepository.findAll()
                 .stream()
-                .map(provideMapper::toDTO)
+                .map(provideMapper::toProvideDTO)
                 .collect(Collectors.toList());
     }
 

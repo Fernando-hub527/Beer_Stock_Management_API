@@ -11,7 +11,7 @@ public interface BeerMapper {
 
     BeerMapper INSTANCE = Mappers.getMapper(BeerMapper.class);
 
-    GroupBeers toModel(BeerDTO beerDTO);
+    GroupBeers toBeerModel(BeerDTO beerDTO);
 
-    BeerDTO toDTO(GroupBeers groupBeers);
+    BeerDTO toBeerDTO(GroupBeers groupBeers);
 }

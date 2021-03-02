@@ -35,32 +35,37 @@ class ProviderServiceTest {
 
    // private static final long INVALID_BEER_ID = 1L;
 
-    @Mock
-    private ProvideRepository provideRepository;
-
-    @Mock
-    private ProvideMapper provideMapper = ProvideMapper.INSTANCE;
+//    @Mock
+//    private ProvideRepository provideRepository;
+//
+//    @Mock
+//    private ProvideMapper provideMapper = ProvideMapper.INSTANCE;
+//
+//    @InjectMocks
+//    private ProviderService providerService;
+@Mock
+private GroupBeerRepository groupBeerRepository;
+    private BeerMapper beerMapper = BeerMapper.INSTANCE;
 
     @InjectMocks
-    private ProviderService providerService;
+    private GroupBeerService groupBeerService;
 
-
-    @Test
-    void whenCreateProviderIsCalledThenProviderIsCreate() throws BeerAlreadyRegisteredException {
-        //given
-        ProvideDTO provideDTOExpected = ProviderDTOBuider.builder().build().toProviderDTO();
-        Provide provideForSave = provideMapper.toModel(provideDTOExpected);
-
-        //when
-        when(provideRepository.findByName(provideDTOExpected.getName())).thenReturn(Optional.empty());
-        when(provideRepository.save(provideForSave)).thenReturn(provideForSave);
-
-        //then
-        ProvideDTO provideDTOsaved= providerService.createProvider(provideDTOExpected);
-
-        assertThat(provideDTOsaved.getName(), is(equalTo(provideDTOExpected.getName())));
-
-    }
+//    @Test
+//    void whenCreateProviderIsCalledThenProviderIsCreate() throws BeerAlreadyRegisteredException {
+//        //given
+//        ProvideDTO provideDTOExpected = ProviderDTOBuider.builder().build().toProviderDTO();
+//        Provide provideForSave = provideMapper.toModel(provideDTOExpected);
+//
+//        //when
+//        when(provideRepository.findByName(provideDTOExpected.getName())).thenReturn(Optional.empty());
+//        when(provideRepository.save(provideForSave)).thenReturn(provideForSave);
+//
+//        //then
+//        ProvideDTO provideDTOsaved= providerService.createProvider(provideDTOExpected);
+//
+//        assertThat(provideDTOsaved.getName(), is(equalTo(provideDTOExpected.getName())));
+//
+//    }
 //
 //    @Test
 //    void whenAlreadyRegisteredBeerInformedThenAnExceptionShouldBeThrown() throws BeerAlreadyRegisteredException {
@@ -74,19 +79,19 @@ class ProviderServiceTest {
 //    }
 //
 //    //findByName
-//    @Test
-//    void whenValidBeerNameIsGivenThenReturnABeer() throws BeerNotFoundException {
-//        BeerDTO beerDTOExpected = BeerDTOBuilder.builder().build().toBeerDTO();
-//        GroupBeers groupBeersExpected = beerMapper.toModel(beerDTOExpected);
-//
-//        //força o retorno de um nome registrado
-//        when(groupBeerRepository.findByName(groupBeersExpected.getName())).thenReturn(Optional.of(groupBeersExpected));
-//
-//        BeerDTO beerReturned = groupBeerService.findByName(beerDTOExpected.getName());
-//
-//        assertThat(beerReturned.getName(), is(equalTo(groupBeersExpected.getName())));
-//
-//    }
+    @Test
+    void whenValidProviderNameIsGivenThenReturnAProvider() throws BeerNotFoundException {
+        BeerDTO beerDTOExpected = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeers groupBeersExpected = beerMapper.toBeerModel(beerDTOExpected);
+
+        //força o retorno de um nome registrado
+        when(groupBeerRepository.findByName(groupBeersExpected.getName())).thenReturn(Optional.of(groupBeersExpected));
+
+        BeerDTO beerReturned = groupBeerService.findByName(beerDTOExpected.getName());
+
+        assertThat(beerReturned.getName(), is(equalTo(groupBeersExpected.getName())));
+
+    }
 //
 //    @Test
 //    void whenNotRegisteredBeerNameIsGivenThenThrowAnException() {

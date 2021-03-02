@@ -15,10 +15,10 @@ import javax.persistence.Id;
 public class Provide {
 
     @Id
-    private Long cnpj;
+    private String cnpj;
 
     @Column(nullable = false)
-    private Long telephone;
+    private String telephone;
 
     @Column(nullable = false)
     private String name;

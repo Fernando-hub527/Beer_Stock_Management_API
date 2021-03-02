@@ -7,10 +7,10 @@ import lombok.Builder;
 public class ProviderDTOBuider {
 
     @Builder.Default
-    private Long cnpj = 198937463L;
+    private String cnpj = "198937463";
 
     @Builder.Default
-    private Long telephone = 77998574669L;
+    private String telephone = "77998574669";
 
     @Builder.Default
     private String name = "Distribuidora Beers";
