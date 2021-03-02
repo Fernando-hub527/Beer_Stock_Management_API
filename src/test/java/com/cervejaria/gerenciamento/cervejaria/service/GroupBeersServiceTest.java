@@ -37,7 +37,7 @@ class GroupBeersServiceTest {
     private BeerMapper beerMapper = BeerMapper.INSTANCE;
 
     @InjectMocks
-    private BeerService beerService;
+    private GroupBeerService groupBeerService;
 
 
     @Test
@@ -50,7 +50,7 @@ class GroupBeersServiceTest {
         when(groupBeerRepository.save(groupBeersSaved)).thenReturn(groupBeersSaved);
 
         //cria o serviço com a cerveja modelo(BeerDTOBuilder)
-        BeerDTO beerCreate = beerService.createBeer(beerDTOExpected);
+        BeerDTO beerCreate = groupBeerService.createBeer(beerDTOExpected);
 
         //confere os resultados
         assertThat(beerCreate.getName(), is(equalTo(beerDTOExpected.getName())));
@@ -66,7 +66,7 @@ class GroupBeersServiceTest {
         //simula a existencia do registro inserido
         when(groupBeerRepository.findByName(beerDTOExpected.getName())).thenReturn(Optional.of(duplicateGroupBeers));
 
-        assertThrows(BeerAlreadyRegisteredException.class, () -> beerService.createBeer(beerDTOExpected));
+        assertThrows(BeerAlreadyRegisteredException.class, () -> groupBeerService.createBeer(beerDTOExpected));
     }
 
     //findByName
@@ -78,7 +78,7 @@ class GroupBeersServiceTest {
         //força o retorno de um nome registrado
         when(groupBeerRepository.findByName(groupBeersExpected.getName())).thenReturn(Optional.of(groupBeersExpected));
 
-        BeerDTO beerReturned = beerService.findByName(beerDTOExpected.getName());
+        BeerDTO beerReturned = groupBeerService.findByName(beerDTOExpected.getName());
 
         assertThat(beerReturned.getName(), is(equalTo(groupBeersExpected.getName())));
 
@@ -90,7 +90,7 @@ class GroupBeersServiceTest {
 
         when(groupBeerRepository.findByName(expectedFoundBeerDTO.getName())).thenReturn(Optional.empty());
 
-        assertThrows(BeerNotFoundException.class, () -> beerService.findByName(expectedFoundBeerDTO.getName()));
+        assertThrows(BeerNotFoundException.class, () -> groupBeerService.findByName(expectedFoundBeerDTO.getName()));
 
     }
 
@@ -102,7 +102,7 @@ class GroupBeersServiceTest {
 
         when(groupBeerRepository.findAll()).thenReturn(Collections.singletonList(groupBeersListExpected));
 
-        List<BeerDTO> listBeers = beerService.listAll();
+        List<BeerDTO> listBeers = groupBeerService.listAll();
 
         assertThat(listBeers, is(not(empty())));
         assertThat(listBeers.get(0), is(equalTo(beerDTOListExpected)));
@@ -118,7 +118,7 @@ class GroupBeersServiceTest {
         when(groupBeerRepository.findById(beerDTOForBerDeleted.getId())).thenReturn(Optional.of(beerforBeDeleted));
         doNothing().when(groupBeerRepository).deleteById(beerDTOForBerDeleted.getId());
 
-        beerService.deleteById(beerDTOForBerDeleted.getId());
+        groupBeerService.deleteById(beerDTOForBerDeleted.getId());
 
         verify(groupBeerRepository, times(1)).findById(beerDTOForBerDeleted.getId());
         verify(groupBeerRepository, times(1)).deleteById(beerDTOForBerDeleted.getId());
@@ -140,7 +140,7 @@ class GroupBeersServiceTest {
         int expectedQuantityAfterIncrement = expectedBeerDTO.getQuantity() + quantityToIncrement;
 
         // then
-        BeerDTO incrementedBeerDTO = beerService.increment(expectedBeerDTO.getId(), quantityToIncrement);
+        BeerDTO incrementedBeerDTO = groupBeerService.increment(expectedBeerDTO.getId(), quantityToIncrement);
 
         assertThat(expectedQuantityAfterIncrement, equalTo(incrementedBeerDTO.getQuantity()));
         assertThat(expectedQuantityAfterIncrement, lessThan(expectedBeerDTO.getMax()));
@@ -154,7 +154,7 @@ class GroupBeersServiceTest {
         when(groupBeerRepository.findById(expectedBeerDTO.getId())).thenReturn(Optional.of(expectedGroupBeers));
 
         int quantityToIncrement = 80;
-        assertThrows(BeerStockExceededException.class, () -> beerService.increment(expectedBeerDTO.getId(), quantityToIncrement));
+        assertThrows(BeerStockExceededException.class, () -> groupBeerService.increment(expectedBeerDTO.getId(), quantityToIncrement));
     }
 
     @Test
@@ -165,7 +165,7 @@ class GroupBeersServiceTest {
         when(groupBeerRepository.findById(expectedBeerDTO.getId())).thenReturn(Optional.of(expectedGroupBeers));
 
         int quantityToIncrement = 45;
-        assertThrows(BeerStockExceededException.class, () -> beerService.increment(expectedBeerDTO.getId(), quantityToIncrement));
+        assertThrows(BeerStockExceededException.class, () -> groupBeerService.increment(expectedBeerDTO.getId(), quantityToIncrement));
     }
 
     @Test
@@ -175,7 +175,7 @@ class GroupBeersServiceTest {
         when(groupBeerRepository.findById(INVALID_BEER_ID))
                 .thenReturn(Optional.empty());
 
-        assertThrows(BeerNotFoundException.class, () -> beerService.increment(INVALID_BEER_ID, quantityToIncrement));
+        assertThrows(BeerNotFoundException.class, () -> groupBeerService.increment(INVALID_BEER_ID, quantityToIncrement));
     }
 
 
@@ -194,7 +194,7 @@ class GroupBeersServiceTest {
 
         int quantityToDecrement = 5;
         int expectedQuantityAfterDecrement = expectedBeerDTO.getQuantity() - quantityToDecrement;
-        BeerDTO decrementedBeerDTO = beerService.decrement(expectedBeerDTO.getId(), quantityToDecrement);
+        BeerDTO decrementedBeerDTO = groupBeerService.decrement(expectedBeerDTO.getId(), quantityToDecrement);
 
         assertThat(expectedQuantityAfterDecrement, equalTo(decrementedBeerDTO.getQuantity()));
         assertThat(expectedQuantityAfterDecrement, greaterThan(0));
@@ -212,7 +212,7 @@ class GroupBeersServiceTest {
 
         int quantityToDecrement = 10;
         int expectedQuantityAfterDecrement = expectedBeerDTO.getQuantity() - quantityToDecrement;
-        BeerDTO incrementedBeerDTO = beerService.decrement(expectedBeerDTO.getId(), quantityToDecrement);
+        BeerDTO incrementedBeerDTO = groupBeerService.decrement(expectedBeerDTO.getId(), quantityToDecrement);
 
         assertThat(expectedQuantityAfterDecrement, equalTo(0));
         assertThat(expectedQuantityAfterDecrement, equalTo(incrementedBeerDTO.getQuantity()));
@@ -226,7 +226,7 @@ class GroupBeersServiceTest {
         when(groupBeerRepository.findById(expectedBeerDTO.getId())).thenReturn(Optional.of(expectedGroupBeers));
 
         int quantityToDecrement = 80;
-        assertThrows(BeerStockExceededException.class, () -> beerService.decrement(expectedBeerDTO.getId(), quantityToDecrement));
+        assertThrows(BeerStockExceededException.class, () -> groupBeerService.decrement(expectedBeerDTO.getId(), quantityToDecrement));
     }
 
     @Test
@@ -235,7 +235,7 @@ class GroupBeersServiceTest {
 
         when(groupBeerRepository.findById(INVALID_BEER_ID)).thenReturn(Optional.empty());
 
-        assertThrows(BeerNotFoundException.class, () -> beerService.decrement(INVALID_BEER_ID, quantityToDecrement));
+        assertThrows(BeerNotFoundException.class, () -> groupBeerService.decrement(INVALID_BEER_ID, quantityToDecrement));
     }
 }
 

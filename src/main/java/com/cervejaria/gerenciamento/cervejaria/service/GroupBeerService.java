@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class BeerService {
+public class GroupBeerService {
 
     private final GroupBeerRepository groupBeerRepository;
     private final BeerMapper beerMapper = BeerMapper.INSTANCE;
