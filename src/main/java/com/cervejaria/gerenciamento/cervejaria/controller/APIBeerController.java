@@ -27,8 +27,8 @@ public class APIBeerController implements APIBeerControllerDocs {
 
     @PostMapping("/{beer}/group")
     @ResponseStatus(HttpStatus.CREATED)
-    public GroupBeerDTO createBeer(@RequestBody @Valid GroupBeerDTO groupBeerDTO, BeerDTO beerDTO) throws BeerAlreadyRegisteredException {
-        return groupBeerService.createBeer(groupBeerDTO);
+    public GroupBeerDTO createBeer(@RequestBody @Valid GroupBeerDTO groupBeerDTO, List<BeerDTO> beerDTOList) throws BeerAlreadyRegisteredException {
+        return groupBeerService.createGroupBeer(groupBeerDTO, beerDTOList);
     }
 
     @PostMapping("/{provider}/provider")

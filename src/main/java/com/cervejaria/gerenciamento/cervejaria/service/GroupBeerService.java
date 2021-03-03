@@ -1,11 +1,14 @@
 package com.cervejaria.gerenciamento.cervejaria.service;
 
+import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.GroupBeerDTO;
+import com.cervejaria.gerenciamento.cervejaria.entity.Beer;
 import com.cervejaria.gerenciamento.cervejaria.entity.GroupBeers;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerAlreadyRegisteredException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerNotFoundException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerStockExceededException;
-import com.cervejaria.gerenciamento.cervejaria.mapper.BeerMapper;
+import com.cervejaria.gerenciamento.cervejaria.mapper.GroupBeerMapper;
+import com.cervejaria.gerenciamento.cervejaria.repository.BeerRepository;
 import com.cervejaria.gerenciamento.cervejaria.repository.GroupBeerRepository;
 import lombok.AllArgsConstructor;
 
@@ -21,26 +24,30 @@ import java.util.stream.Collectors;
 public class GroupBeerService {
 
     private final GroupBeerRepository groupBeerRepository;
-    private final BeerMapper beerMapper = BeerMapper.INSTANCE;
+    private final BeerRepository beerRepository;
+    private final BeerService beerService;
+    private final GroupBeerMapper groupBeerMapper = GroupBeerMapper.INSTANCE;
 
-    public GroupBeerDTO createBeer(GroupBeerDTO groupBeerDTO) throws BeerAlreadyRegisteredException {
+    public GroupBeerDTO createGroupBeer(GroupBeerDTO groupBeerDTO, List<BeerDTO> beerDTOList) throws BeerAlreadyRegisteredException {
         verifyIfIsAlreadyRegistered(groupBeerDTO.getName());
-        GroupBeers groupBeers = beerMapper.toBeerModel(groupBeerDTO);
+        beerService.createBeer(beerDTOList);
+
+        GroupBeers groupBeers = groupBeerMapper.toBeerModel(groupBeerDTO);
         GroupBeers savedGroupBeers = groupBeerRepository.save(groupBeers);
 
-        return beerMapper.toBeerDTO(savedGroupBeers);
+        return groupBeerMapper.toBeerDTO(savedGroupBeers);
     }
 
     public GroupBeerDTO findByName(String name) throws BeerNotFoundException {
         GroupBeers foundGroupBeers = groupBeerRepository.findByName(name)
                 .orElseThrow(() -> new BeerNotFoundException(name));
-        return beerMapper.toBeerDTO(foundGroupBeers);
+        return groupBeerMapper.toBeerDTO(foundGroupBeers);
     }
 
     public List<GroupBeerDTO> listAll() {
         return groupBeerRepository.findAll()
                 .stream()
-                .map(beerMapper::toBeerDTO)
+                .map(groupBeerMapper::toBeerDTO)
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +74,7 @@ public class GroupBeerService {
         if (quantityAfterIncrement <= groupBeersToIncrementStock.getMax()) {
             groupBeersToIncrementStock.setQuantity(groupBeersToIncrementStock.getQuantity() + quantityToIncrement);
             GroupBeers incrementedGroupBeersStock = groupBeerRepository.save(groupBeersToIncrementStock);
-            return beerMapper.toBeerDTO(incrementedGroupBeersStock);
+            return groupBeerMapper.toBeerDTO(incrementedGroupBeersStock);
         }
         throw new BeerStockExceededException(id, quantityToIncrement);
     }
@@ -78,7 +85,7 @@ public class GroupBeerService {
 
         if (quantityAfterDencrement >= 0){
             groupBeersToDecrementStock.setQuantity(quantityAfterDencrement);
-            GroupBeerDTO DecrementedBeerStock = beerMapper.toBeerDTO(groupBeerRepository.save(groupBeersToDecrementStock));
+            GroupBeerDTO DecrementedBeerStock = groupBeerMapper.toBeerDTO(groupBeerRepository.save(groupBeersToDecrementStock));
             return DecrementedBeerStock;
         }
 

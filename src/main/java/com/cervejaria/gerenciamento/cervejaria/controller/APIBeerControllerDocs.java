@@ -21,7 +21,7 @@ public interface APIBeerControllerDocs {
             @ApiResponse(code = 201, message = "Success beer creation"),
             @ApiResponse(code = 400, message = "Missing required fields or wrong field range value.")
     })
-    GroupBeerDTO createBeer(GroupBeerDTO groupBeerDTO, BeerDTO beerDTO) throws BeerAlreadyRegisteredException;
+    GroupBeerDTO createBeer(GroupBeerDTO groupBeerDTO,List<BeerDTO> beerDTOList) throws BeerAlreadyRegisteredException;
 
     @ApiOperation(value = "Provider creation operation")
     @ApiResponses(value = {
