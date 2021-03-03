@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 @Data
 @Entity
@@ -25,5 +27,8 @@ public class Provide {
 
     @Column(nullable = false)
     private String address;
+
+    @OneToMany(mappedBy = "provide")
+    private List<Beer> beers;
 
 }

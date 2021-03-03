@@ -35,7 +35,7 @@ public class GroupBeers {
     private BeerType type;
 
     @OneToMany(mappedBy = "groupBeers")
-    private List<Beer> groupBeers;
+    private List<Beer> beers;
 
 
 }

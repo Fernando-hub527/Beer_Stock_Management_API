@@ -22,9 +22,9 @@ public class Beer {
     @Column(nullable = false)
     private String date;
 
-//    @ManyToOne
-//    @JoinColumn(name = "fornecedores", referencedColumnName = "CNPJ", nullable = false)
-//    private Provide cnpjProvide;
+    @ManyToOne
+    @JoinColumn(name = "cnpj_provide", referencedColumnName = "cnpj", nullable = false)
+    private Provide provide;
 
     @ManyToOne
     @JoinColumn(name = "id_Beers",  referencedColumnName = "id", nullable = false)
