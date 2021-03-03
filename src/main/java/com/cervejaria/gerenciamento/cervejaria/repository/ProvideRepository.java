@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ProvideRepository extends JpaRepository<Provide, Long> {
+public interface ProvideRepository extends JpaRepository<Provide, String> {
     Optional<Provide> findByName(String name);
 
 }

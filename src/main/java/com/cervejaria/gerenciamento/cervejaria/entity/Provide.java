@@ -25,4 +25,5 @@ public class Provide {
 
     @Column(nullable = false)
     private String address;
+
 }

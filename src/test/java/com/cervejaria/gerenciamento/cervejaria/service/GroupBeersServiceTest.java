@@ -8,6 +8,7 @@ import com.cervejaria.gerenciamento.cervejaria.exception.BeerNotFoundException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerStockExceededException;
 import com.cervejaria.gerenciamento.cervejaria.mapper.BeerMapper;
 import com.cervejaria.gerenciamento.cervejaria.repository.GroupBeerRepository;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

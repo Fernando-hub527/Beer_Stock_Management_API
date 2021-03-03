@@ -9,14 +9,17 @@ import com.cervejaria.gerenciamento.cervejaria.exception.BeerNotFoundException;
 import com.cervejaria.gerenciamento.cervejaria.mapper.ProvideMapper;
 import com.cervejaria.gerenciamento.cervejaria.repository.ProvideRepository;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import springfox.documentation.spring.web.SpringfoxWebMvcConfiguration;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ProviderService {
 
     private final ProvideRepository provideRepository;
@@ -42,7 +45,7 @@ public class ProviderService {
                 .collect(Collectors.toList());
     }
 
-    public void deleteById(Long id) throws BeerNotFoundException {
+    public void deleteById(String id) throws BeerNotFoundException {
         verifyIfExists(id);
         provideRepository.deleteById(id);
     }
@@ -54,7 +57,7 @@ public class ProviderService {
         }
     }
 
-    private Provide verifyIfExists(Long id) throws BeerNotFoundException {
+    private Provide verifyIfExists(String id) throws BeerNotFoundException {
         return provideRepository.findById(id)
                 .orElseThrow(() -> new BeerNotFoundException(id));
     }
