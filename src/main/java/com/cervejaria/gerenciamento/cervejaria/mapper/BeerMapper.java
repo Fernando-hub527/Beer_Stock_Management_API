@@ -1,7 +1,7 @@
 package com.cervejaria.gerenciamento.cervejaria.mapper;
 
 
-import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
+import com.cervejaria.gerenciamento.cervejaria.dto.GroupBeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.entity.GroupBeers;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -11,7 +11,7 @@ public interface BeerMapper {
 
     BeerMapper INSTANCE = Mappers.getMapper(BeerMapper.class);
 
-    GroupBeers toBeerModel(BeerDTO beerDTO);
+    GroupBeers toBeerModel(GroupBeerDTO groupBeerDTO);
 
-    BeerDTO toBeerDTO(GroupBeers groupBeers);
+    GroupBeerDTO toBeerDTO(GroupBeers groupBeers);
 }

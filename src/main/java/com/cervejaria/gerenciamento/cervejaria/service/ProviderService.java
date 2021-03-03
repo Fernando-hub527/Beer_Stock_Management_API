@@ -1,18 +1,14 @@
 package com.cervejaria.gerenciamento.cervejaria.service;
 
-import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.ProvideDTO;
-import com.cervejaria.gerenciamento.cervejaria.entity.GroupBeers;
 import com.cervejaria.gerenciamento.cervejaria.entity.Provide;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerAlreadyRegisteredException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerNotFoundException;
 import com.cervejaria.gerenciamento.cervejaria.mapper.ProvideMapper;
 import com.cervejaria.gerenciamento.cervejaria.repository.ProvideRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import springfox.documentation.spring.web.SpringfoxWebMvcConfiguration;
 
 import java.util.List;
 import java.util.Optional;

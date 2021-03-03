@@ -1,6 +1,6 @@
 package com.cervejaria.gerenciamento.cervejaria.builder;
 
-import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
+import com.cervejaria.gerenciamento.cervejaria.dto.GroupBeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.enums.BeerType;
 import lombok.Builder;
 
@@ -26,8 +26,8 @@ public class BeerDTOBuilder {
     @Builder.Default
     private BeerType type = BeerType.LAGER;
 
-    public BeerDTO toBeerDTO() {
-        return new BeerDTO(id,
+    public GroupBeerDTO toBeerDTO() {
+        return new GroupBeerDTO(id,
                 name,
                 brand,
                 max,
