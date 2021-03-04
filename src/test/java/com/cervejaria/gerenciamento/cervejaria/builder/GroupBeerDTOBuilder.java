@@ -6,7 +6,7 @@ import lombok.Builder;
 
 
 @Builder
-public class BeerDTOBuilder {
+public class GroupBeerDTOBuilder {
 
     @Builder.Default
     private Long id = 1L;

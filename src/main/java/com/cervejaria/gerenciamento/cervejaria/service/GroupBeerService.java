@@ -1,14 +1,11 @@
 package com.cervejaria.gerenciamento.cervejaria.service;
 
-import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.GroupBeerDTO;
-import com.cervejaria.gerenciamento.cervejaria.entity.Beer;
 import com.cervejaria.gerenciamento.cervejaria.entity.GroupBeers;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerAlreadyRegisteredException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerNotFoundException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerStockExceededException;
 import com.cervejaria.gerenciamento.cervejaria.mapper.GroupBeerMapper;
-import com.cervejaria.gerenciamento.cervejaria.repository.BeerRepository;
 import com.cervejaria.gerenciamento.cervejaria.repository.GroupBeerRepository;
 import lombok.AllArgsConstructor;
 
@@ -24,14 +21,10 @@ import java.util.stream.Collectors;
 public class GroupBeerService {
 
     private final GroupBeerRepository groupBeerRepository;
-    private final BeerRepository beerRepository;
-    private final BeerService beerService;
     private final GroupBeerMapper groupBeerMapper = GroupBeerMapper.INSTANCE;
 
-    public GroupBeerDTO createGroupBeer(GroupBeerDTO groupBeerDTO, List<BeerDTO> beerDTOList) throws BeerAlreadyRegisteredException {
+    public GroupBeerDTO createGroupBeer(GroupBeerDTO groupBeerDTO) throws BeerAlreadyRegisteredException {
         verifyIfIsAlreadyRegistered(groupBeerDTO.getName());
-        beerService.createBeer(beerDTOList);
-
         GroupBeers groupBeers = groupBeerMapper.toBeerModel(groupBeerDTO);
         GroupBeers savedGroupBeers = groupBeerRepository.save(groupBeers);
 

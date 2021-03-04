@@ -28,7 +28,7 @@ public class Provide {
     @Column(nullable = false)
     private String address;
 
-    @OneToMany(mappedBy = "provide")
-    private List<Beer> beers;
+//    @OneToMany(mappedBy = "provide")
+//    private List<Beer> beers;
 
 }

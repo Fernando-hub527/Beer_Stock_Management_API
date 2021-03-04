@@ -34,8 +34,8 @@ public class GroupBeers {
     @Column(nullable = false)
     private BeerType type;
 
-    @OneToMany(mappedBy = "groupBeers")
-    private List<Beer> beers;
+//    @OneToMany(mappedBy = "groupBeers")
+//    private List<Beer> beers;
 
 
 }

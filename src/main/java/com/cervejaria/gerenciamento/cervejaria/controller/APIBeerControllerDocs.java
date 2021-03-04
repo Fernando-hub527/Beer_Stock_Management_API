@@ -1,6 +1,5 @@
 package com.cervejaria.gerenciamento.cervejaria.controller;
 
-import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.GroupBeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.ProvideDTO;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerAlreadyRegisteredException;
@@ -21,7 +20,7 @@ public interface APIBeerControllerDocs {
             @ApiResponse(code = 201, message = "Success beer creation"),
             @ApiResponse(code = 400, message = "Missing required fields or wrong field range value.")
     })
-    GroupBeerDTO createBeer(GroupBeerDTO groupBeerDTO,List<BeerDTO> beerDTOList) throws BeerAlreadyRegisteredException;
+    GroupBeerDTO createBeer(GroupBeerDTO groupBeerDTO) throws BeerAlreadyRegisteredException;
 
     @ApiOperation(value = "Provider creation operation")
     @ApiResponses(value = {
@@ -37,16 +36,37 @@ public interface APIBeerControllerDocs {
     })
     GroupBeerDTO findByName(@PathVariable String name) throws BeerNotFoundException;
 
+    @ApiOperation(value = "Returns beer found by a given name")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Success beer found in the system"),
+            @ApiResponse(code = 404, message = "GroupBeers with given name not found.")
+    })
+    ProvideDTO findByNameProvider(@PathVariable String name) throws BeerNotFoundException;
+
     @ApiOperation(value = "Returns a list of all beers registered in the system")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "List of all beers registered in the system"),
     })
     List<GroupBeerDTO> listBeers();
 
+    @ApiOperation(value = "Returns a list of all beers registered in the system")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "List of all beers registered in the system"),
+    })
+    List<ProvideDTO> listProviders();
+
     @ApiOperation(value = "Delete a beer found by a given valid Id")
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Success beer deleted in the system"),
             @ApiResponse(code = 404, message = "GroupBeers with given id not found.")
     })
-    void deleteById(@PathVariable Long id) throws BeerNotFoundException;
+    void deleteByIdBeer(@PathVariable Long id) throws BeerNotFoundException;
+
+
+    @ApiOperation(value = "Delete a beer found by a given valid Id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Success beer deleted in the system"),
+            @ApiResponse(code = 404, message = "GroupBeers with given id not found.")
+    })
+    void deleteByIdProvider(@PathVariable String id) throws BeerNotFoundException;
 }

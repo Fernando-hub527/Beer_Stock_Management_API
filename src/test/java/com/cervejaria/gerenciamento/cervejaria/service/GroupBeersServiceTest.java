@@ -1,8 +1,9 @@
 package com.cervejaria.gerenciamento.cervejaria.service;
 
-import com.cervejaria.gerenciamento.cervejaria.builder.BeerDTOBuilder;
+import com.cervejaria.gerenciamento.cervejaria.builder.GroupBeerDTOBuilder;
 import com.cervejaria.gerenciamento.cervejaria.dto.GroupBeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.entity.GroupBeers;
+import com.cervejaria.gerenciamento.cervejaria.exception.BeerAlreadyRegisteredException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerNotFoundException;
 import com.cervejaria.gerenciamento.cervejaria.exception.BeerStockExceededException;
 import com.cervejaria.gerenciamento.cervejaria.mapper.GroupBeerMapper;
@@ -40,27 +41,27 @@ class GroupBeersServiceTest {
     private GroupBeerService groupBeerService;
 
 
-//    @Test
-//    void whenCreateBeerIsCalledThenBeerIsCreate() throws BeerAlreadyRegisteredException {
-//        GroupBeerDTO groupBeerDTOExpected = BeerDTOBuilder.builder().build().toBeerDTO();
-//        GroupBeers groupBeersSaved = groupBeerMapper.toBeerModel(groupBeerDTOExpected);
-//
-//        //força os retornos do objeto simulado
-//        when(groupBeerRepository.findByName(groupBeerDTOExpected.getName())).thenReturn(Optional.empty());
-//        when(groupBeerRepository.save(groupBeersSaved)).thenReturn(groupBeersSaved);
-//
-//        //cria o serviço com a cerveja modelo(BeerDTOBuilder)
-//        GroupBeerDTO beerCreate = groupBeerService.createBeer(groupBeerDTOExpected);
-//
-//        //confere os resultados
-//        assertThat(beerCreate.getName(), is(equalTo(groupBeerDTOExpected.getName())));
-//        assertThat(beerCreate.getId(), is(equalTo(groupBeerDTOExpected.getId())));
-//        assertThat(beerCreate, is(equalTo(groupBeerDTOExpected)));
-//    }
+    @Test
+    void whenCreateBeerIsCalledThenBeerIsCreate() throws BeerAlreadyRegisteredException {
+        GroupBeerDTO groupBeerDTOExpected = GroupBeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeers groupBeersSaved = groupBeerMapper.toBeerModel(groupBeerDTOExpected);
+
+        //força os retornos do objeto simulado
+        when(groupBeerRepository.findByName(groupBeerDTOExpected.getName())).thenReturn(Optional.empty());
+        when(groupBeerRepository.save(groupBeersSaved)).thenReturn(groupBeersSaved);
+
+        //cria o serviço com a cerveja modelo(GroupBeerDTOBuilder)
+        GroupBeerDTO beerCreate = groupBeerService.createGroupBeer(groupBeerDTOExpected);
+
+        //confere os resultados
+        assertThat(beerCreate.getName(), is(equalTo(groupBeerDTOExpected.getName())));
+        assertThat(beerCreate.getId(), is(equalTo(groupBeerDTOExpected.getId())));
+        assertThat(beerCreate, is(equalTo(groupBeerDTOExpected)));
+    }
 
 //    @Test
-//    void whenAlreadyRegisteredBeerInformedThenAnExceptionShouldBeThrown() throws BeerAlreadyRegisteredException {
-//        GroupBeerDTO groupBeerDTOExpected = BeerDTOBuilder.builder().build().toBeerDTO();
+//    void whenAlreadyRegisteredGroupBeerInformedThenAnExceptionShouldBeThrown() throws BeerAlreadyRegisteredException {
+//        GroupBeerDTO groupBeerDTOExpected = GroupBeerDTOBuilder.builder().build().toBeerDTO();
 //        GroupBeers duplicateGroupBeers = groupBeerMapper.toBeerModel(groupBeerDTOExpected);
 //
 //        //simula a existencia do registro inserido
@@ -72,7 +73,7 @@ class GroupBeersServiceTest {
     //findByName
     @Test
     void whenValidBeerNameIsGivenThenReturnABeer() throws BeerNotFoundException {
-        GroupBeerDTO groupBeerDTOExpected = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO groupBeerDTOExpected = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers groupBeersExpected = groupBeerMapper.toBeerModel(groupBeerDTOExpected);
 
         //força o retorno de um nome registrado
@@ -86,7 +87,7 @@ class GroupBeersServiceTest {
 
     @Test
     void whenNotRegisteredBeerNameIsGivenThenThrowAnException() {
-        GroupBeerDTO expectedFoundGroupBeerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO expectedFoundGroupBeerDTO = GroupBeerDTOBuilder.builder().build().toBeerDTO();
 
         when(groupBeerRepository.findByName(expectedFoundGroupBeerDTO.getName())).thenReturn(Optional.empty());
 
@@ -97,7 +98,7 @@ class GroupBeersServiceTest {
     //ListAll
     @Test
     void whenListBeerIsCalledThenReturnAListOfBeers() {
-        GroupBeerDTO groupBeerDTOListExpected = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO groupBeerDTOListExpected = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers groupBeersListExpected = groupBeerMapper.toBeerModel(groupBeerDTOListExpected);
 
         when(groupBeerRepository.findAll()).thenReturn(Collections.singletonList(groupBeersListExpected));
@@ -112,7 +113,7 @@ class GroupBeersServiceTest {
 
     @Test
     void whenExclusionIsCalledWithValidIdThenABeerShouldBeDeleted() throws BeerNotFoundException {
-        GroupBeerDTO groupBeerDTOForBerDeleted = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO groupBeerDTOForBerDeleted = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers beerforBeDeleted = groupBeerMapper.toBeerModel(groupBeerDTOForBerDeleted);
 
         when(groupBeerRepository.findById(groupBeerDTOForBerDeleted.getId())).thenReturn(Optional.of(beerforBeDeleted));
@@ -129,7 +130,7 @@ class GroupBeersServiceTest {
     @Test
     void whenIncrementIsCalledThenIncrementBeerStock() throws BeerNotFoundException, BeerStockExceededException {
         //given
-        GroupBeerDTO expectedGroupBeerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO expectedGroupBeerDTO = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers expectedGroupBeers = groupBeerMapper.toBeerModel(expectedGroupBeerDTO);
 
         //when
@@ -148,7 +149,7 @@ class GroupBeersServiceTest {
 
     @Test
     void whenIncrementIsGreatherThanMaxThenThrowException() {
-        GroupBeerDTO expectedGroupBeerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO expectedGroupBeerDTO = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers expectedGroupBeers = groupBeerMapper.toBeerModel(expectedGroupBeerDTO);
 
         when(groupBeerRepository.findById(expectedGroupBeerDTO.getId())).thenReturn(Optional.of(expectedGroupBeers));
@@ -159,7 +160,7 @@ class GroupBeersServiceTest {
 
     @Test
     void whenIncrementAfterSumIsGreatherThanMaxThenThrowException() {
-        GroupBeerDTO expectedGroupBeerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO expectedGroupBeerDTO = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers expectedGroupBeers = groupBeerMapper.toBeerModel(expectedGroupBeerDTO);
 
         when(groupBeerRepository.findById(expectedGroupBeerDTO.getId())).thenReturn(Optional.of(expectedGroupBeers));
@@ -183,7 +184,7 @@ class GroupBeersServiceTest {
 
     @Test
     void whenDecrementIsCalledThenDecrementBeerStock() throws BeerNotFoundException, BeerStockExceededException {
-        GroupBeerDTO expectedGroupBeerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO expectedGroupBeerDTO = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers expectedGroupBeers = groupBeerMapper.toBeerModel(expectedGroupBeerDTO);
 
         when(groupBeerRepository.findById(expectedGroupBeerDTO.getId()))
@@ -204,7 +205,7 @@ class GroupBeersServiceTest {
 
         @Test
     void whenDecrementIsCalledToEmptyStockThenEmptyBeerStock() throws BeerNotFoundException, BeerStockExceededException {
-        GroupBeerDTO expectedGroupBeerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO expectedGroupBeerDTO = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers expectedGroupBeers = groupBeerMapper.toBeerModel(expectedGroupBeerDTO);
 
         when(groupBeerRepository.findById(expectedGroupBeerDTO.getId())).thenReturn(Optional.of(expectedGroupBeers));
@@ -220,7 +221,7 @@ class GroupBeersServiceTest {
 
     @Test
     void whenDecrementIsLowerThanZeroThenThrowException() {
-        GroupBeerDTO expectedGroupBeerDTO = BeerDTOBuilder.builder().build().toBeerDTO();
+        GroupBeerDTO expectedGroupBeerDTO = GroupBeerDTOBuilder.builder().build().toBeerDTO();
         GroupBeers expectedGroupBeers = groupBeerMapper.toBeerModel(expectedGroupBeerDTO);
 
         when(groupBeerRepository.findById(expectedGroupBeerDTO.getId())).thenReturn(Optional.of(expectedGroupBeers));

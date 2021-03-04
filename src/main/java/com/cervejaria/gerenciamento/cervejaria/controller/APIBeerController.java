@@ -1,6 +1,5 @@
 package com.cervejaria.gerenciamento.cervejaria.controller;
 
-import com.cervejaria.gerenciamento.cervejaria.dto.BeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.GroupBeerDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.ProvideDTO;
 import com.cervejaria.gerenciamento.cervejaria.dto.QuantityDTO;
@@ -25,33 +24,49 @@ public class APIBeerController implements APIBeerControllerDocs {
     private final GroupBeerService groupBeerService;
     private final ProviderService providerService;
 
-    @PostMapping("/{beer}/group")
+    @PostMapping("/beer/group")
     @ResponseStatus(HttpStatus.CREATED)
-    public GroupBeerDTO createBeer(@RequestBody @Valid GroupBeerDTO groupBeerDTO, List<BeerDTO> beerDTOList) throws BeerAlreadyRegisteredException {
-        return groupBeerService.createGroupBeer(groupBeerDTO, beerDTOList);
+    public GroupBeerDTO createBeer(@RequestBody @Valid GroupBeerDTO groupBeerDTO) throws BeerAlreadyRegisteredException {
+        return groupBeerService.createGroupBeer(groupBeerDTO);
     }
 
-    @PostMapping("/{provider}/provider")
+    @PostMapping("/people/provider")
     @ResponseStatus(HttpStatus.CREATED)
     public ProvideDTO createProvide(@RequestBody @Valid ProvideDTO provideDTO) throws BeerAlreadyRegisteredException {
         return providerService.createProvider(provideDTO);
     }
 
 
-    @GetMapping("/{name}")
+    @GetMapping("/groupBeer/{name}")
     public GroupBeerDTO findByName(@PathVariable String name) throws BeerNotFoundException {
         return groupBeerService.findByName(name);
     }
 
-    @GetMapping
+    @GetMapping("/provider/{name}")
+    public ProvideDTO findByNameProvider(@PathVariable String name) throws BeerNotFoundException {
+        return providerService.findByName(name);
+    }
+
+    @GetMapping("/beer")
     public List<GroupBeerDTO> listBeers() {
         return groupBeerService.listAll();
     }
 
-    @DeleteMapping("/{id}")
+    @GetMapping("/provider")
+    public List<ProvideDTO> listProviders() {
+        return providerService.listAll();
+    }
+
+    @DeleteMapping("/{id}/beer")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteById(@PathVariable Long id) throws BeerNotFoundException {
+    public void deleteByIdBeer(@PathVariable Long id) throws BeerNotFoundException {
         groupBeerService.deleteById(id);
+    }
+
+    @DeleteMapping("/{id}/provider")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteByIdProvider(@PathVariable String id) throws BeerNotFoundException {
+        providerService.deleteById(id);
     }
 
     @PatchMapping("/{id}/increment")
